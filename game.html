@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="description" content="game, language, learning, entertainment">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Molnár István || Мельник Степан">
+  <meta name="keywords" content="">
+  <meta name="theme-color" content="#050">
+  <title>Sentences game</title>
+  <style rel="stylesheet" type="text/css">
+    *:root {
+      font-size: 16px;
+    }
+
+    * {
+      margin: 8px auto;
+      background: #000;
+      color: #ffab;
+      box-sizing: border-box;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    body::before {
+      content: '2023.01.08. 07:43 v:1.1.1';
+      font-size: 10px;
+      position: fixed;
+      top: 4px;
+      left: 4px;
+    }
+
+    *> :first-child {
+      margin: 2px auto;
+    }
+
+    body *:not(script) {
+      display: block;
+      width: 95%;
+    }
+
+    :focus {
+      outline: 2px outset orange;
+    }
+
+    form {}
+
+    textarea {
+      min-height: 2rem;
+      max-width: 95%;
+      min-width: 25%;
+    }
+
+    article {
+      text-align: center;
+      border: #ffab 1px outset;
+      width: 40% !important;
+      font-size: 1.3rem;
+    }
+
+    article::before {
+      content: '0 < ';
+    }
+
+    button {
+      border: 1px outset #ffab;
+      width: 50% !important;
+      zoom: 1.5;
+    }
+
+    button#clear {
+      border-color: red;
+      width: 25% !important;
+    }
+
+    label {
+      text-align: center;
+    }
+
+    select {
+      width: 33% !important;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .var {
+      border: 1px outset #ffab;
+      padding: 16px;
+      letter-spacing: 1px;
+      word-spacing: 2px;
+      font-size: 2rem;
+      word-wrap: break-word;
+      word-brea: break-all;
+    }
+
+    .var>div {
+      display: inline;
+    }
+
+    .var>div>span {
+      display: inline-block;
+      min-width: 8px;
+      width: 2.2rem;
+      height: 3rem;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .rublika {
+      border: 1px solid red;
+    }
+
+    details {}
+
+    summary {
+      border: 1px dotted #990;
+      padding: 8px;
+    }
+  </style>
+</head>
+
+<body id="main">
+  <form>
+    <textarea id="inputText">Piroska és a Farkas. Volt egyszer egy kedves, aranyos kislány; aki csak ismerte, mindenki kedvelte, de legjobban mégis a nagymamája szerette: a világ minden kincsét neki adta volna. Egyszer vett neki egy piros bársonysapkát. A kislánynak annyira tetszett a sapka, hogy mindig csak ezt hordta; el is nevezték róla Piroskának. Piroskáék bent laktak a faluban, nagymama pedig kint az erdőben, egy takaros kis házban. Egy szép napon azt mondja Piroskának az édesanyja: – Gyere csak, kislányom! Itt van egy kalács meg egy üveg bor, vidd el a nagymamának. Beteg is, gyönge is szegényke, jól fog esni neki. Indulj szaporán, mielőtt beáll a hőség. Aztán szépen, rendesen menj, ne szaladgálj le az útról, mert elesel, és összetörik az üveg, kifolyik a bor, és akkor mit iszik a nagymama! Ha pedig odaérsz, ne bámészkodj összevissza a szobában; az legyen az első dolgod, hogy illedelmesen jó reggelt kívánj. – Bízzad csak rám, édesanyám, minden úgy lesz, ahogy mondod – felelte Piroska az intelemre, azzal karjára vette a kosárkát, és útnak indult. Átvágott a mezőn, beért az erdőbe; hát ki jön szembe vele? Nem más, mint a farkas. – Jó napot, Piroska! – köszönt rá a kislányra. Az meg mosolyogva, jó szívvel felelte: – Neked is, kedves farkas! – Nem tudta még, milyen alattomos, gonosz állattal van dolga. – Hová ilyen korán, lelkecském? – szívélyeskedett tovább a farkas. – Nagymamához. – Aztán mit viszel a kosaradban? – Bort meg kalácsot. Tegnap sütöttük; szegény jó nagymama gyönge is, beteg is, jót fog tenni neki, legalább egy kicsit erőre kap tőle</textarea>
+    <button id="clear" type="button">Clear</button>
+    <label>Stage of shuffle:</label>
+    <select id="stage">
+      <option value="0">1-2 words</option>
+      <option value="1">more words</option>
+      <option value="2">all words</option>
+    </select>
+    <label>Letter show IF:</label>
+    <article id="rate" contenteditable="true">3</article>
+    <button id="shuffle" type="button">Load | Start</button>
+    <section id="actual" class="var">Let's start : illessz be egy mondatokból álló szöveget a felső mezőbe és nyomd meg a start gombot!</section>
+  </form>
+  <details>
+    <summary>Katt = NFO a játérkól</summary>
+    <p>Az első mező - arra való, hogy be tudj vinni egy adott szöveget amiből majd dolgozhat a játék. Legyen szó magyarról, angolról, vagy bármilyen más nyelvű mondatokból és pontokból álló szövegről.</p>
+    <p>A második gomb - a törlés. Vigyázz! Visszahozni nem lehet adatot és nem kérdez rá törlés előtt.</p>
+    <p>A words-ös részen azt állíthatod be a 3 lehetőség közül, hogy milyen gyakorisággal legyenek a szavak "feldolgozva" amelyekbe majd beírhatod a megfejtéseidet.</p>
+    <p>A következő 0 &#60; 3 mező pedig azt állítja, hogy mekkora eséllyel hiányozzon a betű az adot keretből. A pontos működése így szól: ha a generált szám nagyobb mint nulla. Azaz minden pozitív nem nullával egyenlő számmal a betű bekerül a helyére. Ha igazán nehezet akarsz, akkor 1-esre állítod a számot (=</p>
+    <p>Load | start = ezzel kezdhetsz is ha minden megvan, illetve ha megakadsz, vagy bugol a program, ezzel léphetsz tovább.</p>
+    <p>Ha nem tudod milyen betű kell az adott négyszögbe : dupla katt /érintés, és be is illeszti magát a betű.</p>
+    <p>amennyiben "undefined" szót látsz a kijelzőn - esélyes, hogy a játék bugos lett. Töltsd újra vagy ellenőrizd magad kézzel - vagyis a load gombot nyomogatva. Ha nem vált zöldre a jó megoldásnál az adott betű kerete - töltsd újra az oldalt.</p>
+    <p>Kellemes kikapcsolódást és szórakoztató tanulást kívánok! (=</p>
+  </details>
+  <script type="text/javascript">
+    // constant variables
+    const idF = (e) => {
+        return document.getElementById(e);
+      },
+      loopF = (max) => {
+        arr = [];
+        for (let i = 0; i < max; i++) {
+          arr.push(i);
+        }
+        return arr;
+      },
+      randF = (max) => {
+        return Math.floor(Math.random() * max);
+      },
+      correctF = (min, max, array) => {
+        for (let row = 0; row < array.length; row++) {
+          for (let col = 1; col < array.length - 1; col++) {
+            if (array[row] == array[col]) {
+              array[row] = randF(max);
+            }
+          }
+        }
+      },
+      genF = (e) => {
+        return document.createElement(e);
+      },
+      inzertF = (dest, word) => {
+        let div = genF('DIV'),
+          num = 0;
+        do {
+          let span = genF('SPAN'),
+            str = document.createTextNode(word[num]),
+            chance = Math.floor(Math.random() * idF('rate').innerText);
+          if (chance > 0) {
+            span.appendChild(str);
+          }
+          span.setAttribute('data-text', word[num]);
+          div.insertBefore(span, null);
+          span.classList.add('rublika');
+          span.contentEditable = true;
+          span.setAttribute('ondblclick', 'this.innerText = this.getAttribute("data-text")');
+          num++;
+        } while (num < word.length);
+        dest.insertBefore(div, null);
+      };
+
+    // functions
+    let clearF = () => {
+        idF('inputText').value = '';
+        array = [];
+      },
+      array = [],
+      shuffleF = () => {
+        idF('actual').innerHTML = '';
+        if (array.length === 0) {
+          array = idF('inputText').value.split('.');
+        }
+        let lent = array.length,
+          oneOfAll = Math.floor(Math.random() * lent),
+          wordsArr = array[oneOfAll].split(' '),
+          option = idF('stage').value,
+          amountOfRandoms,
+          actualArrayLent = wordsArr.length,
+          loopArray,
+          randomizedArr = [];
+        switch (option) {
+          case '0':
+            amountOfRandoms = Math.floor(Math.random() * 2) + 1;
+            break;
+          case '1':
+            amountOfRandoms = Math.floor(Math.random() * ((actualArrayLent - 1) - 3 + 1)) + 3;
+            break;
+          default:
+            amountOfRandoms = actualArrayLent;
+        }
+        loopArray = loopF(actualArrayLent);
+        for (let choosen = 0; choosen < amountOfRandoms; choosen++) {
+          let r = randF(actualArrayLent);
+          randomizedArr.push(r);
+        }
+        correctF(0, actualArrayLent, randomizedArr);
+        randomizedArr.sort();
+        //loopArray.sort();
+        for (let x = 0; x < loopArray.length; x++) {
+          for (let insert = 0; insert < randomizedArr.length; insert++) {
+
+            if (loopArray[x] == randomizedArr[insert]) {
+              loopArray[x] = '#random';
+            }
+          }
+        }
+        for (let iter = 0; iter < loopArray.length; iter++) {
+          if (loopArray[iter] == '#random') {
+            inzertF(idF('actual'), wordsArr[iter]);
+          } else {
+            idF('actual').innerHTML += ' ' + wordsArr[iter];
+          }
+        }
+        window.setInterval(checkDataText, 1000);
+        undefinedF();
+        array.splice(oneOfAll, 1);
+      },
+      undefinedF = () => {
+        let a = idF('actual'),
+          len = a.children.length;
+        for (let b = 0; b < len; b++) {
+          if (a.children[b].innerHTML.includes('undefined')) {
+            a.children[b].remove();
+          }
+        }
+      },
+      countUpRedAndGreen = 0,
+      checkDataText = () => {
+        let sp = document.getElementsByTagName('SPAN'),
+          len = sp.length;
+        for (let y = 0; y < len; y++) {
+          let dt = sp[y].getAttribute('data-text'),
+            it = sp[y].innerText;
+          if (dt == it) {
+            sp[y].style.border = '1px solid #0f0';
+            countUpRedAndGreen++;
+          } else {
+            countUpRedAndGreen--;
+            sp[y].style.border = '1px solid #f00';
+          }
+          if (countUpRedAndGreen == len || countUpRedAndGreen > len) {
+            shuffleF();
+          }
+        }
+        countUpRedAndGreen = 0;
+      };
+
+    // callbacks
+    idF('clear').addEventListener('click', clearF);
+    idF('shuffle').addEventListener('click', shuffleF);
+    console.log('loaded well');
+  </script>
+</body>
+
+</html>
